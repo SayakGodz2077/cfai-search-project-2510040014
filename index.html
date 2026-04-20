@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #f4f4f4;
+}
+
+.container {
+  background: white;
+  padding: 20px;
+  margin: 50px auto;
+  width: 300px;
+  border-radius: 10px;
+}
+
+input, button {
+  padding: 8px;
+  margin: 5px;
+  width: 80%;
+}
+
+button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+p {
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Search Comparison</h2>
+
+<input id="arr" placeholder="1,2,3,4">
+<input id="target" placeholder="target">
+<br>
+<button onclick="run()">Run</button>
+
+<p id="out1"></p>
+<p id="out2"></p>
+</div>
+
+<script>
+
+function linear(arr, t){
+  for(let i=0;i<arr.length;i++){
+    if(arr[i]==t) return i;
+  }
+  return -1;
+}
+
+function binary(arr, t){
+  let l=0, r=arr.length-1;
+  while(l<=r){
+    let m=Math.floor((l+r)/2);
+    if(arr[m]==t) return m;
+    if(arr[m]<t) l=m+1;
+    else r=m-1;
+  }
+  return -1;
+}
+
+function run(){
+  let arr = document.getElementById("arr").value.split(",").map(Number);
+  let t = Number(document.getElementById("target").value);
+
+  let s1 = performance.now();
+  let r1 = linear(arr, t);
+  let e1 = performance.now();
+
+  let sorted = arr.slice().sort((a,b)=>a-b);
+
+  let s2 = performance.now();
+  let r2 = binary(sorted, t);
+  let e2 = performance.now();
+
+  document.getElementById("out1").innerHTML =
+    "Linear: index=" + r1 + " time=" + (e1-s1).toFixed(5);
+
+  document.getElementById("out2").innerHTML =
+    "Binary: index=" + r2 + " time=" + (e2-s2).toFixed(5);
+}
+
+</script>
+
+</body>
+</html>
